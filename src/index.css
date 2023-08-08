@@ -8,5 +8,20 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+input, textarea {
+    min-height: 40px !important;
+    border: 1px solid #6a6a6a !important;
+    border-radius: 5px !important;
+}
+
+input:focus, textarea {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.ant-form-item {
+    margin-bottom: 0 !important;
 }
