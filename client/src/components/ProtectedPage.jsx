@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { message } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { GetCurrentUser } from '../apicalls/users'
+import { getLoggedInUsername } from '../utils/helper'
 
 const ProtectedPage = ({ children }) => {
     const navigate = useNavigate()
@@ -32,7 +33,7 @@ const ProtectedPage = ({ children }) => {
 
     return (
         currentUser && <div>
-            <h1>{currentUser?.name}</h1>
+            <h1>{getLoggedInUsername(currentUser)}</h1>
             {children}
         </div>
     )
