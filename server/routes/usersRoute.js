@@ -5,6 +5,7 @@ const User = require('../models/userModel');
 
 // register new user
 router.post('/register', async (req, res) => {
+    console.log(req.body);
     try {
         // check if user already exists
         const userExists = await User.findOne({ email: req.body.email })
@@ -52,3 +53,5 @@ router.post('/login', async (req, res) => {
         return res.send({ success: false, message: error.message })
     }
 })
+
+module.exports = router;

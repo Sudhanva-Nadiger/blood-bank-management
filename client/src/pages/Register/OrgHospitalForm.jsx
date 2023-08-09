@@ -10,13 +10,13 @@ const OrgHospitalForm = ({ userType }) => {
         <>
             <Form.Item
                 label={label}
-                name={label}
+                name={userType === 'hospital' ? 'hospitalName' : 'organizationName'}
             >
                 <Input required  />
             </Form.Item>
             <Form.Item
                 label={'Owner'}
-                name={'ewner'}
+                name={'owner'}
             >
                 <Input required />
             </Form.Item>
@@ -28,7 +28,7 @@ const OrgHospitalForm = ({ userType }) => {
             </Form.Item>
             <Form.Item
                 label={'Phone'}
-                name={'ehone'}
+                name={'phone'}
             >
                 <Input required />
             </Form.Item>

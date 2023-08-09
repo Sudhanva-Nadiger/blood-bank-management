@@ -1,14 +1,28 @@
 import React, { useState } from 'react'
-import { Button, Form, Input, Radio } from 'antd'
+import { Button, Form, Input, Radio, message } from 'antd'
 import { Link } from 'react-router-dom'
 import OrgHospitalForm from './OrgHospitalForm'
+import { RegisterUser } from '../../apicalls/users'
 
 const Register = () => {
 
   const [userType, setUserType] = useState('donar')
 
-  const onFinish = (values) => {
-    console.log(values);
+  const onFinish = async (values) => {
+    try {
+      const response = await RegisterUser({
+        ...values,
+        userType
+      })
+      console.log(response);
+      if(response.success) {
+        message.success(response.message)
+      } else {
+        throw new Error(response.message)
+      }
+    } catch (error) {
+      message.error(error.message)
+    }
   }
 
   return (
@@ -43,7 +57,7 @@ const Register = () => {
               <Form.Item label="Phone" name='phone'>
                   <Input required />
               </Form.Item>
-              <Form.Item label="Password" name='passowrd'>
+              <Form.Item label="Password" name='password'>
                 <Input type='password' min={6} required />
               </Form.Item>
             </>
