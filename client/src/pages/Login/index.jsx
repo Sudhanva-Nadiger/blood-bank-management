@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Form, Input, Radio, message } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+
+
 import { LoginUser } from '../../apicalls/users'
+import { SetLoading } from '../../redux/loaderSlice'
 
 const Login = () => {
 
   const [userType, setUserType] = useState('donar')
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const onFinish = async (values) => {
     console.log(values);
     try {
+      dispatch(SetLoading(true))
       const response = await LoginUser(values)
+      dispatch(SetLoading(false))
+
       if(response.success) {
         message.success(response.message)
         // storing token in local storage
@@ -22,6 +30,7 @@ const Login = () => {
         throw new Error(response.message)
       }
     } catch (error) {
+      dispatch(SetLoading(false))
       message.error(error.message)
     }
   }

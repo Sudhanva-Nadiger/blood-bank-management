@@ -1,12 +1,18 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+
 import ProtectedPage from '../../components/ProtectedPage'
 
-const index = () => {
+const Home = () => {
+  const {currentUser} = useSelector(state => state.users)
   return (
     <ProtectedPage>
-      <div>index</div>
+      <>
+        <h1>{currentUser?.email}</h1>
+        <h1>Home .....</h1>
+      </>
     </ProtectedPage>
   )
 }
 
-export default index
+export default Home

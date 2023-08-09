@@ -1,27 +1,34 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { message } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+
 import { GetCurrentUser } from '../apicalls/users'
 import { getLoggedInUsername } from '../utils/helper'
+import { SetCurrentUser } from '../redux/usersSlice'
 
 const ProtectedPage = ({ children }) => {
     const navigate = useNavigate()
-    const [currentUser, setCurrentUser] = useState(null)
+    const dispatch = useDispatch()
 
-    const getCurrentUser = async () => {
+    const {currentUser} = useSelector(state => state.users) 
+
+    const getCurrentUser = useCallback(async () => {
         try {
             const response = await GetCurrentUser()
             console.log(response);
             if(response.success) {
                 message.success(response.message)
-                setCurrentUser(response.data)
+                dispatch(SetCurrentUser(response.data))
             } else {
                 throw new Error(response.message)
             }
         } catch (error) {
             message.error(error.message)
         }
-    }
+    }, [dispatch])
+    
 
     useEffect(() => {
         if(localStorage.getItem('token') !== null) {
@@ -29,13 +36,13 @@ const ProtectedPage = ({ children }) => {
         } else {
             navigate('/login')
         }
-    }, [navigate])
+    }, [getCurrentUser, navigate])
 
     return (
-        currentUser && <div>
+        currentUser ? <div>
             <h1>{getLoggedInUsername(currentUser)}</h1>
             {children}
-        </div>
+        </div> :  <></>
     )
 }
 
