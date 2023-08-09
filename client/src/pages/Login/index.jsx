@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 
 import { LoginUser } from '../../apicalls/users'
 import { SetLoading } from '../../redux/loaderSlice'
+import { getAntdInputValidation } from '../../utils/helper'
 
 const Login = () => {
 
@@ -61,10 +62,10 @@ const Login = () => {
           <Radio value='organization'>Organization</Radio>
         </Radio.Group>
             <>
-              <Form.Item label="Email" name='email'>
+              <Form.Item rules={getAntdInputValidation()} label="Email" name='email'>
                   <Input type='email' required />
               </Form.Item>
-              <Form.Item label="Password" name='password'>
+              <Form.Item rules={getAntdInputValidation()} label="Password" name='password'>
                 <Input type='password' min={6} required />
               </Form.Item>
             </>

@@ -1,29 +1,49 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, Input, Radio, message } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+
 import OrgHospitalForm from './OrgHospitalForm'
 import { RegisterUser } from '../../apicalls/users'
+import { useDispatch } from 'react-redux'
+import { SetLoading } from '../../redux/loaderSlice'
+import { getAntdInputValidation } from '../../utils/helper'
 
 const Register = () => {
 
   const [userType, setUserType] = useState('donar')
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const rules = getAntdInputValidation()
 
   const onFinish = async (values) => {
     try {
+
+      dispatch(SetLoading(true))
       const response = await RegisterUser({
         ...values,
         userType
       })
+      dispatch(SetLoading(false))
+
       console.log(response);
       if(response.success) {
         message.success(response.message)
+        navigate('/login')
       } else {
         throw new Error(response.message)
       }
     } catch (error) {
+      dispatch(SetLoading(false))
       message.error(error.message)
     }
   }
+
+  useEffect(() => {
+    if(localStorage.getItem('token')) {
+      navigate('/')
+    }
+  }, [navigate])
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-primary">
@@ -48,16 +68,16 @@ const Register = () => {
         {
           userType === 'donar' ? (
             <>
-              <Form.Item label="Name" name='name'>
+              <Form.Item rules={rules} label="Name" name='name'>
                 <Input required />
               </Form.Item>
-              <Form.Item label="Email" name='email'>
+              <Form.Item rules={rules} label="Email" name='email'>
                   <Input type='email' required />
               </Form.Item>
-              <Form.Item label="Phone" name='phone'>
+              <Form.Item rules={rules} label="Phone" name='phone'>
                   <Input required />
               </Form.Item>
-              <Form.Item label="Password" name='password'>
+              <Form.Item rules={rules} label="Password" name='password'>
                 <Input type='password' min={6} required />
               </Form.Item>
             </>

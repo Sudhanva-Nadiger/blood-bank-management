@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { GetCurrentUser } from '../apicalls/users'
 import { getLoggedInUsername } from '../utils/helper'
 import { SetCurrentUser } from '../redux/usersSlice'
+import { SetLoading } from '../redux/loaderSlice'
 
 const ProtectedPage = ({ children }) => {
     const navigate = useNavigate()
@@ -16,7 +17,9 @@ const ProtectedPage = ({ children }) => {
 
     const getCurrentUser = useCallback(async () => {
         try {
+            dispatch(SetLoading(true))
             const response = await GetCurrentUser()
+            dispatch(SetLoading(false))
             console.log(response);
             if(response.success) {
                 message.success(response.message)
@@ -25,6 +28,7 @@ const ProtectedPage = ({ children }) => {
                 throw new Error(response.message)
             }
         } catch (error) {
+            dispatch(SetLoading(false))
             message.error(error.message)
         }
     }, [dispatch])

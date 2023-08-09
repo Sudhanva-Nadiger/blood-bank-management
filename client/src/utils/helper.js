@@ -7,3 +7,10 @@ export const getLoggedInUsername = (user) => {
         return user.organizationName
     }
 }
+
+export const getAntdInputValidation = () => {
+    return [{
+        required: true,
+        message: 'This field is required',
+    }]
+}
