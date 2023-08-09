@@ -1,13 +1,29 @@
 import React, { useState } from 'react'
-import { Button, Form, Input, Radio } from 'antd'
-import { Link } from 'react-router-dom'
+import { Button, Form, Input, Radio, message } from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
+import { LoginUser } from '../../apicalls/users'
 
 const Login = () => {
 
   const [userType, setUserType] = useState('donar')
+  const navigate = useNavigate()
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log(values);
+    try {
+      const response = await LoginUser(values)
+      if(response.success) {
+        message.success(response.message)
+        // storing token in local storage
+        localStorage.setItem('token', response.data)
+
+        navigate('/')
+      } else { 
+        throw new Error(response.message)
+      }
+    } catch (error) {
+      message.error(error.message)
+    }
   }
 
   return (
@@ -29,19 +45,14 @@ const Login = () => {
           <Radio value='hospital'>Hospital</Radio>
           <Radio value='organization'>Organization</Radio>
         </Radio.Group>
-
-        
             <>
               <Form.Item label="Email" name='email'>
                   <Input type='email' required />
               </Form.Item>
-              <Form.Item label="Password" name='passowrd'>
+              <Form.Item label="Password" name='password'>
                 <Input type='password' min={6} required />
               </Form.Item>
             </>
-        
-
-
         <Button type='primary' className='' htmlType='submit'>
           Login
         </Button>

@@ -30,6 +30,7 @@ router.post('/register', async (req, res) => {
 // login user
 router.post('/login', async (req, res) => {
     try {
+        console.log(req.body);
         // check if user exists
         const user = await User.findOne({ email: req.body.email })
         if (!user) {
