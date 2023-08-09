@@ -10,13 +10,11 @@ export const axiosInstance = async (
             {
                 method,
                 url: `${BASE_URL}${endpoint}`,
-                data: payload
-            },
-            {
+                data: payload,
                 headers: {
-                    authorization: `Bearer ${localStorage.getItem('token')}`
+                    authorization: `${localStorage.getItem('token')}`
                 }
-            }
+            },
         )
 
         return response.data

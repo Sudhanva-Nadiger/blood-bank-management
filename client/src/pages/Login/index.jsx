@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, Input, Radio, message } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { LoginUser } from '../../apicalls/users'
@@ -25,6 +25,12 @@ const Login = () => {
       message.error(error.message)
     }
   }
+
+  useEffect(() => {
+    if(localStorage.getItem('token') !== null) {
+      navigate('/')
+    }
+  }, [navigate])
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-primary">
