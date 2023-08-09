@@ -1,8 +1,11 @@
 import React from 'react'
+import ProtectedPage from '../../components/ProtectedPage'
 
 const index = () => {
   return (
-    <div>index</div>
+    <ProtectedPage>
+      <div>index</div>
+    </ProtectedPage>
   )
 }
 

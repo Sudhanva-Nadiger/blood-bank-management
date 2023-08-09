@@ -55,4 +55,14 @@ router.post('/login', async (req, res) => {
     }
 })
 
+// get current user 
+router.get('/get-current-user', async (req, res) => {
+    try {
+        
+    } catch (error) {
+        return res.send({ success: false, message: error.message })
+    }
+})
+    
+
 module.exports = router;
