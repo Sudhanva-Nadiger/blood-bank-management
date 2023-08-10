@@ -1,6 +1,10 @@
-import { Form, Input, Modal, Radio, Select } from 'antd'
+import { Form, Input, Modal, Radio, Select, message } from 'antd'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+
 import { getAntdInputValidation } from '../../../utils/helper'
+import { SetLoading } from '../../../redux/loaderSlice'
+import { AddInventory } from '../../../apicalls/inventory'
 
 const InventoryForm = ({
     open,
@@ -10,10 +14,28 @@ const InventoryForm = ({
 
     const [inventoryType, setInventoryType] = useState('in')
     const [form] = Form.useForm()
+    const dispatch = useDispatch()
     const rules = getAntdInputValidation()
 
-    const onFinish = (values) => {
-        console.log(values)
+    const onFinish = async (values) => {
+        try {
+            dispatch(SetLoading(true))
+            const inventory = {
+                ...values,
+                inventoryType
+            }
+            const response = await AddInventory(inventory)
+            dispatch(SetLoading(false))
+            if(response.success){
+                message.success(response.message)
+                setOpen(false)
+            } else {
+                throw new Error(response.message)
+            }
+        } catch (error) {
+            message.error(error.message)
+            dispatch(SetLoading(false))
+        }
     }
 
     return (
