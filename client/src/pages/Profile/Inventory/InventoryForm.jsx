@@ -1,6 +1,6 @@
 import { Form, Input, Modal, Radio, Select, message } from 'antd'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { getAntdInputValidation } from '../../../utils/helper'
 import { SetLoading } from '../../../redux/loaderSlice'
@@ -13,16 +13,20 @@ const InventoryForm = ({
 }) => {
 
     const [inventoryType, setInventoryType] = useState('in')
+    const { currentUser } = useSelector(state => state.users)
     const [form] = Form.useForm()
     const dispatch = useDispatch()
     const rules = getAntdInputValidation()
+
+    console.log('currentUser', currentUser);
 
     const onFinish = async (values) => {
         try {
             dispatch(SetLoading(true))
             const inventory = {
                 ...values,
-                inventoryType
+                inventoryType,
+                organization: currentUser._id
             }
             const response = await AddInventory(inventory)
             dispatch(SetLoading(false))
