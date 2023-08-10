@@ -1,6 +1,6 @@
 {
     "verbose": true,
-    "ignore": ["./client"],
+    "ignore": ["./client", "notes.md"],
     "execMap": {
       "rb": "ruby",
       "pde": "processing --sketch={{pwd}} --run"

@@ -56,7 +56,11 @@ const ProtectedPage = ({ children }) => {
                 </div>
                 <div className='flex items-center'>
                     <i className='ri-shield-user-fill'></i>
-                    <span className='mr-5 ml-1 text-xl cursor-pointer'>{getLoggedInUsername(currentUser)}</span>
+                    <span className='mr-5 ml-1 text-xl cursor-pointer'
+                        onClick={() => navigate('/profile')}
+                    >
+                        {getLoggedInUsername(currentUser)}
+                    </span>
 
                     <Tooltip title='logout' className='ml-5 cursor-pointer'>
                         <i className='ri-logout-circle-r-line' onClick={() => {
@@ -68,10 +72,10 @@ const ProtectedPage = ({ children }) => {
             </div>
 
             {/* content */}
-            <div className="p-5">
+            <div className="px-5 py-1">
                 {children}
             </div>
-        </div> : <></>
+        </div> : <div>oops</div>
     )
 }
 
