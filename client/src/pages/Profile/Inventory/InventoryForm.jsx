@@ -1,18 +1,80 @@
-import { Modal } from 'antd'
-import React from 'react'
+import { Form, Input, Modal, Radio, Select } from 'antd'
+import { useState } from 'react'
+import { getAntdInputValidation } from '../../../utils/helper'
 
 const InventoryForm = ({
     open,
     setOpen,
     reloadData
 }) => {
+
+    const [inventoryType, setInventoryType] = useState('in')
+    const [form] = Form.useForm()
+    const rules = getAntdInputValidation()
+
+    const onFinish = (values) => {
+        console.log(values)
+    }
+
     return (
         <Modal
-            title='Add Inventory'
+            title='ADD INVENTORY'
             open={open}
             onCancel={() => setOpen(false)}
             centered
+            onOk={() => {
+                form.submit()
+            }}
         >
+            <Form
+                layout='vertical'
+                className='flex flex-col gap-5'
+                form={form}
+                onFinish={onFinish}
+            >
+                <Form.Item label='Inventory Type'>
+                    <Radio.Group
+                        value={inventoryType}
+                        onChange={(e) => setInventoryType(e.target.value)}
+                    >
+                        <Radio value='in'>In</Radio>
+                        <Radio value='out'>Out</Radio>
+                    </Radio.Group>
+                </Form.Item>
+
+                <Form.Item 
+                    label='Blood Group' 
+                    name='bloodGroup'
+                    rules={rules}
+                >
+                    <Select placeholder="Select the blood group">
+                        <Select.Option value='A+'>A+</Select.Option>
+                        <Select.Option value='A-'>A-</Select.Option>
+                        <Select.Option value='B+'>B+</Select.Option>
+                        <Select.Option value='B-'>B-</Select.Option>
+                        <Select.Option value='AB+'>AB+</Select.Option>
+                        <Select.Option value='AB-'>AB-</Select.Option>
+                        <Select.Option value='O+'>O+</Select.Option>
+                        <Select.Option value='O-'>O-</Select.Option>
+                    </Select>
+                </Form.Item>
+
+                <Form.Item 
+                    label={inventoryType === 'out' ? 'Hospital Email': 'Donar Email'} 
+                    name='email'
+                    rules={rules}
+                >
+                    <Input type='email' />
+                </Form.Item>
+
+                <Form.Item 
+                    label='Quantity(ML)' 
+                    name='quantity'
+                    rules={rules}
+                >
+                    <Input type='number' />
+                </Form.Item>
+            </Form>
         </Modal>
     )
 }
