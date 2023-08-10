@@ -25,3 +25,7 @@ input:focus, textarea {
 .ant-form-item {
     margin-bottom: 0 !important;
 }
+
+i {
+    font-size: 18px !important;
+}
