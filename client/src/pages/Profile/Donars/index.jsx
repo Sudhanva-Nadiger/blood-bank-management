@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { Table, Tooltip, Typography, message } from 'antd'
+
+import { getDateFormat } from '../../../utils/helper'
 import { SetLoading } from '../../../redux/loaderSlice'
 import { GetAllDonarsOfOrganization } from '../../../apicalls/users'
-import { message } from 'antd'
 
 const Donars = () => {
     const [data, setData] = useState([])
@@ -26,12 +28,37 @@ const Donars = () => {
         }
     },[dispatch])
 
+    const columns = [
+        {
+            title: 'Name',
+            dataIndex: 'name',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            render: (text) => <Tooltip title={text}>
+                <Typography.Text ellipsis={true} className='w-9 sm:w-12 md:w-full'>{text}</Typography.Text>
+            </Tooltip>
+        },
+        {
+            title: 'Phone',
+            dataIndex: 'phone'
+        },
+        {
+            title: 'Created At',
+            dataIndex: 'createdAt',
+            render: (text) => getDateFormat(text)
+        },
+    ]
+
     useEffect(() => {
         getData()
     }, [getData])
 
     return (
-        <div>{JSON.stringify(data)}</div>
+        <div>
+            <Table dataSource={data} columns={columns} />
+        </div>
     )
 }
 

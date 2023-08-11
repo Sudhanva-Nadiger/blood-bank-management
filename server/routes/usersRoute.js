@@ -97,7 +97,12 @@ router.get('/get-all-donars', authMiddleware, async (req, res) => {
             }
         ])
 
-        const donars = await User.find({_id: {$in: uniqueDonarIds.map(donar => donar._id)}}, {name: 1})
+        const donars = await User.find({_id: {$in: uniqueDonarIds.map(donar => donar._id)}}, {
+            name: 1,
+            email: 1,
+            phone: 1,
+            createdAt: 1,
+        })
 
         return res.send({
             success: true,
