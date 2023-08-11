@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const authMiddleware = require('../middlewares/authMiddleware');
+const Inventory = require('../models/inventoryModel');
+const mongoose = require('mongoose');
 
 // register new user
 router.post('/register', async (req, res) => {
@@ -71,6 +73,36 @@ router.get('/get-current-user',authMiddleware, async (req, res) => {
             success: true,
             message: 'User fetched successfully',
             data: user
+        })
+    } catch (error) {
+        return res.send({ success: false, message: error.message })
+    }
+})
+
+// get all unique donars of organization
+router.get('/get-all-donars', authMiddleware, async (req, res) => {
+    try {
+        const organization = new mongoose.Types.ObjectId(req.body.userId)
+        const uniqueDonarIds = await Inventory.aggregate([
+            {
+                $match: {
+                    inventoryType: 'in',
+                    organization
+                },
+            },
+            {
+                $group: {
+                    _id: '$donar',
+                }
+            }
+        ])
+
+        const donars = await User.find({_id: {$in: uniqueDonarIds.map(donar => donar._id)}}, {name: 1})
+
+        return res.send({
+            success: true,
+            message: 'Donars fetched successfully',
+            data: donars
         })
     } catch (error) {
         return res.send({ success: false, message: error.message })

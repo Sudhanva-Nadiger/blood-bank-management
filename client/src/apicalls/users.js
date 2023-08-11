@@ -9,6 +9,13 @@ export const RegisterUser = async (payload) => {
 }
 
 export const GetCurrentUser = async () => {
-    const response = await axiosInstance('get', '/api/users/get-current-user')
-    return response
+    return await axiosInstance('get', '/api/users/get-current-user')
+}
+
+export const GetAllDonarsOfOrganization = async () => {
+    return await axiosInstance('GET', '/api/users/get-all-donars');
+}
+
+export const GetAllHospitalOfOrganization = async () => {
+    return await axiosInstance('GET', '/api/users/get-all-hospitals');
 }
