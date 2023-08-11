@@ -4,17 +4,18 @@ import { Table, Tooltip, Typography, message } from 'antd'
 
 import { getDateFormat } from '../../../utils/helper'
 import { SetLoading } from '../../../redux/loaderSlice'
-import { GetAllOrganizationsOfDonar } from '../../../apicalls/users'
+import { GetAllOrganizationsOfDonar, GetAllOrganizationsOfHospital } from '../../../apicalls/users'
 
-const Organization = () => {
+const Organization = ({userType}) => {
     const [data, setData] = useState([])
     const dispatch = useDispatch()
 
     const getData = useCallback(async () => {
         try {
             dispatch(SetLoading(true))
-            const response = await GetAllOrganizationsOfDonar()
+            const response = await (userType === 'donar' ? GetAllOrganizationsOfDonar() : GetAllOrganizationsOfHospital());
             dispatch(SetLoading(false))
+            console.log('organizations of hosp', response);
             if(response.success) {
                 setData(response.data)
                 dispatch(SetLoading(false))
@@ -25,7 +26,7 @@ const Organization = () => {
             dispatch(SetLoading(false))
             message.error(error.message)
         }
-    },[dispatch])
+    },[dispatch, userType])
 
     const columns = [
         {

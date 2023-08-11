@@ -140,6 +140,33 @@ router.get('/get-all-organizations-donar', authMiddleware, async (req, res) => {
     }
 })
 
+router.get('/get-all-organizations-hospital', authMiddleware, async (req, res) => {
+    try {
+        const hospital = new mongoose.Types.ObjectId(req.body.userId)
+        const uniqueOrganizationIds = await Inventory.distinct('organization', {
+            hospital
+        })
+
+        const organizations = await User.find({_id: {$in: uniqueOrganizationIds.map(organization => organization._id)}}, {
+            organizationName: 1,
+            email: 1,
+            phone: 1,
+            createdAt: 1,
+            owner:1
+        })
+
+        console.log("orgs of hospital", organizations);
+
+        return res.send({
+            success: true,
+            message: 'Hospitals fetched successfully',
+            data: organizations
+        })
+    } catch (error) {
+        return res.send({ success: false, message: error.message })
+    }
+})
+
 router.get('/get-all-hospitals', authMiddleware, async (req, res) => {
     try {
         const organization = new mongoose.Types.ObjectId(req.body.userId)
@@ -176,8 +203,5 @@ router.get('/get-all-hospitals', authMiddleware, async (req, res) => {
         return res.send({ success: false, message: error.message })
     }
 })
-
-// get unique organizations for donar
-    
 
 module.exports = router;
