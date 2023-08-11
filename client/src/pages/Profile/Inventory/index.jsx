@@ -11,7 +11,7 @@ const Inventory = () => {
     const [open, setOpen] = useState(false)
     const [data, setData] = useState([])
     const dispatch = useDispatch()
-
+    
     const colums = [
         {
             title: 'Inventory TYpe',
@@ -35,13 +35,13 @@ const Inventory = () => {
                 if(record.inventoryType === 'in') {
                     return record.donor.name
                 } else {
-                    return record.hospital.name
+                    return record.hospital.hospitalName
                 }
             }
         },
         {
             title: 'Date',
-            dataIndex: 'date',
+            dataIndex: 'createdAt',
             render: (text) => getDateFormat(text)
         }
     ]
@@ -75,7 +75,7 @@ const Inventory = () => {
 
             <Table columns={colums} dataSource={data} className='mt-3 border border-black'/>
 
-            <InventoryForm	open={open} setOpen={setOpen} />
+            <InventoryForm	open={open} setOpen={setOpen} reloadData={getData}/>
         </div>
     )
 }

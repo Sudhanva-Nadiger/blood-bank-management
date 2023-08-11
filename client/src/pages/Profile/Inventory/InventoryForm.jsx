@@ -29,6 +29,7 @@ const InventoryForm = ({
                 organization: currentUser._id
             }
             const response = await AddInventory(inventory)
+            reloadData()
             dispatch(SetLoading(false))
             if(response.success){
                 message.success(response.message)

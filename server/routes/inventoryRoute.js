@@ -2,6 +2,7 @@ const router = require('express').Router();
 const Inventory = require('../models/inventoryModel');
 const User = require('../models/userModel');
 const authMiddleWare = require('../middlewares/authMiddleware');
+const mongoose = require('mongoose');
 
 // @desc    Add new inventory
 // @route   POST /api/inventory/add
@@ -14,8 +15,6 @@ router.post('/add', authMiddleWare, async (req, res) => {
             throw new Error('Invalid Email');
         }
 
-        console.log("log from add inventory", user);
-
         const invType = req.body.inventoryType
         if(invType === 'in' && user.userType !== 'donar') {
             throw new Error('This email not registered as donor');
@@ -26,6 +25,56 @@ router.post('/add', authMiddleWare, async (req, res) => {
         }
 
         if(invType === 'out') {
+            // check if inventory is available
+            const requestedBloodGroup = req.body.bloodGroup;
+            const requestedQuantity = req.body.quantity;
+            const organization = new mongoose.Types.ObjectId(req.body.userId);
+
+            const totalInOfRequestedBloodGroup = await Inventory.aggregate([
+                {
+                    $match: {
+                        bloodGroup: requestedBloodGroup,
+                        inventoryType: 'in',
+                        organization: organization
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$bloodGroup',
+                        total: {
+                            $sum: '$quantity'
+                        }
+                    }
+                }
+            ]);
+
+            const totalIn = totalInOfRequestedBloodGroup.length > 0 ? totalInOfRequestedBloodGroup[0].total : 0;
+
+            const totalOutOfRequestedBloodGroup = await Inventory.aggregate([
+                {
+                    $match: {
+                        bloodGroup: requestedBloodGroup,
+                        inventoryType: 'out',
+                        organization: organization
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$bloodGroup',
+                        total: {
+                            $sum: '$quantity'
+                        }
+                    }
+                }
+            ]);
+
+            const totalOut = totalOutOfRequestedBloodGroup.length > 0 ? totalOutOfRequestedBloodGroup[0].total : 0;
+            const availableQuantity = totalIn - totalOut;
+
+            if(availableQuantity < requestedQuantity) {
+                throw new Error(`only ${availableQuantity} unit(s) of ${requestedBloodGroup.toUpperCase()} blood available`);
+            }
+
             req.body.hospital = user._id;
         } else {
             req.body.donor = user._id;
@@ -51,7 +100,7 @@ router.post('/add', authMiddleWare, async (req, res) => {
 // get inventory
 router.get('/get', authMiddleWare, async (req, res) => {
     try {
-        const inventory = await Inventory.find({organization: req.body.userId}).populate('donor').populate('hospital');
+        const inventory = await Inventory.find({organization: req.body.userId}).populate('donor').populate('hospital').sort({createdAt: -1});
         return res.send({
             success: true,
             message: 'Inventory fetched successfully',
