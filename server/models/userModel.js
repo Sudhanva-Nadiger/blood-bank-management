@@ -24,6 +24,12 @@ const userSchema = new mongoose.Schema({
             return this.userType === 'organization'
         }
     },
+    owner: {
+        type: String,
+        required: function () {
+            return this.userType === 'organization' || this.userType === 'hospital'
+        }
+    },
     website: {
         type: String,
         required: function () {

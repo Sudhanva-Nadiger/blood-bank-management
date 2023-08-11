@@ -113,6 +113,44 @@ router.get('/get-all-donars', authMiddleware, async (req, res) => {
         return res.send({ success: false, message: error.message })
     }
 })
+
+// get all unique hospitals of organization
+router.get('/get-all-hospitals', authMiddleware, async (req, res) => {
+    try {
+        const organization = new mongoose.Types.ObjectId(req.body.userId)
+        const uniqueHospitalIds = await Inventory.aggregate([
+            {
+                $match: {
+                    inventoryType: 'out',
+                    organization
+                },
+            },
+            {
+                $group: {
+                    _id: '$hospital',
+                }
+            }
+        ])
+
+        const hospitals = await User.find({_id: {$in: uniqueHospitalIds.map(hospital => hospital._id)}}, {
+            hospitalName: 1,
+            email: 1,
+            phone: 1,
+            createdAt: 1,
+            owner:1
+        })
+
+        console.log(hospitals);
+
+        return res.send({
+            success: true,
+            message: 'Hospitals fetched successfully',
+            data: hospitals
+        })
+    } catch (error) {
+        return res.send({ success: false, message: error.message })
+    }
+})
     
 
 module.exports = router;

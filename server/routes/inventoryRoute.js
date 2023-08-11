@@ -100,7 +100,7 @@ router.post('/add', authMiddleWare, async (req, res) => {
 // get inventory
 router.get('/get', authMiddleWare, async (req, res) => {
     try {
-        const inventory = await Inventory.find({organization: req.body.userId}).populate('donar').populate('hospital').sort({createdAt: -1});
+        const inventory = await Inventory.find({organization: req.body.userId}).populate('donar').populate('hospital', 'hospitalName').sort({createdAt: -1});
         return res.send({
             success: true,
             message: 'Inventory fetched successfully',
