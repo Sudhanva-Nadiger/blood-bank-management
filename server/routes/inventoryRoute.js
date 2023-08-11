@@ -17,7 +17,7 @@ router.post('/add', authMiddleWare, async (req, res) => {
 
         const invType = req.body.inventoryType
         if(invType === 'in' && user.userType !== 'donar') {
-            throw new Error('This email not registered as donor');
+            throw new Error('This email not registered as donar');
         }
 
         if(invType === 'out' && user.userType !== 'hospital') {
@@ -77,7 +77,7 @@ router.post('/add', authMiddleWare, async (req, res) => {
 
             req.body.hospital = user._id;
         } else {
-            req.body.donor = user._id;
+            req.body.donar = user._id;
         }
 
         const inventory = new Inventory(req.body);
@@ -100,7 +100,7 @@ router.post('/add', authMiddleWare, async (req, res) => {
 // get inventory
 router.get('/get', authMiddleWare, async (req, res) => {
     try {
-        const inventory = await Inventory.find({organization: req.body.userId}).populate('donor').populate('hospital').sort({createdAt: -1});
+        const inventory = await Inventory.find({organization: req.body.userId}).populate('donar').populate('hospital').sort({createdAt: -1});
         return res.send({
             success: true,
             message: 'Inventory fetched successfully',

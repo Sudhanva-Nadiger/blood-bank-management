@@ -11,6 +11,8 @@ const Inventory = () => {
     const [open, setOpen] = useState(false)
     const [data, setData] = useState([])
     const dispatch = useDispatch()
+
+    console.log(data);
     
     const colums = [
         {
@@ -33,7 +35,7 @@ const Inventory = () => {
             dataIndex: 'reference',
             render: (text, record) => {
                 if(record.inventoryType === 'in') {
-                    return record.donor.name
+                    return record.donar.name
                 } else {
                     return record.hospital.hospitalName
                 }
@@ -50,6 +52,7 @@ const Inventory = () => {
         try {
             dispatch(SetLoading(true))
             const response = await GetInventory()
+            console.log(response);
             dispatch(SetLoading(false))
             if(response.success) {
                 setData(response.data)

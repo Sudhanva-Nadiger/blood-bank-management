@@ -32,8 +32,8 @@ const inventorySchema = new mongoose.Schema({
             return this.inventoryType === 'out';
         }
     },
-    // if inventoryType is in then donorId is required
-    donor: {
+    // if inventoryType is in then donarId is required
+    donar: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users',
         required: function () {
