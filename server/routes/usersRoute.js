@@ -37,6 +37,12 @@ router.post('/login', async (req, res) => {
         if (!user) {
             return res.send({ success: false, message: 'User does not exist' })
         }
+
+        // check if user type is correct
+        if(user.userType !== req.body.userType) {
+            return res.send({ success: false, message: 'Invalid user type' })
+        }
+
         // check if password is correct
         const validPassword = await bcrypt.compare(req.body.password, user.password)
         if (!validPassword) {

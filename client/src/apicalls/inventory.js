@@ -1,10 +1,9 @@
 import { axiosInstance } from '.';
 
 export const AddInventory = async (inventory) => {
-    try {
-        const res = await axiosInstance('POST', '/api/inventory/add', inventory);
-        return res;
-    } catch (error) {
-        console.log(error);
-    }
+    return await axiosInstance('POST', '/api/inventory/add', inventory);
+}
+
+export const GetInventory = async () => {
+   return await axiosInstance('GET', '/api/inventory/get');
 }

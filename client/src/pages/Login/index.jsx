@@ -18,7 +18,10 @@ const Login = () => {
     console.log(values);
     try {
       dispatch(SetLoading(true))
-      const response = await LoginUser(values)
+      const response = await LoginUser({
+        ...values,
+        userType
+      })
       dispatch(SetLoading(false))
 
       if(response.success) {
