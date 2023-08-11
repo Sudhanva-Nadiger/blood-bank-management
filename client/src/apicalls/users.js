@@ -19,3 +19,7 @@ export const GetAllDonarsOfOrganization = async () => {
 export const GetAllHospitalOfOrganization = async () => {
     return await axiosInstance('GET', '/api/users/get-all-hospitals');
 }
+
+export const GetAllOrganizationsOfDonar = async () => {
+    return await axiosInstance('GET', '/api/users/get-all-organizations-donar');
+}

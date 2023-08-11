@@ -6,6 +6,7 @@ import ProtectedPage from '../../components/ProtectedPage'
 import Inventory from './Inventory'
 import Donars from './Donars'
 import Hospital from './Hospital'
+import Organizations from './Organization'
 
 const Profile = () => {
     const { currentUser } = useSelector(state => state.users)
@@ -14,7 +15,7 @@ const Profile = () => {
             <div>
                 <Tabs>
                     {
-                        currentUser?.userType === 'organization' && (
+                        currentUser?.userType === 'organization' ? (
                             <>
                                 <Tabs.TabPane tab='Inventory' key='1'>
                                     <Inventory />
@@ -24,6 +25,14 @@ const Profile = () => {
                                 </Tabs.TabPane>
                                 <Tabs.TabPane tab='Hospitals' key='3'>
                                     <Hospital />
+                                </Tabs.TabPane>
+                            </>
+                        ) : (
+                            <>
+                                <Tabs.TabPane tab='Donations' key='4'>
+                                </Tabs.TabPane>
+                                <Tabs.TabPane tab='Organizations' key='5'>
+                                    <Organizations />
                                 </Tabs.TabPane>
                             </>
                         )
