@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Tooltip, message } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 
@@ -45,7 +45,7 @@ const ProtectedPage = ({ children }) => {
         currentUser ? <div>
             {/* header */}
             <div className='flex justify-between items-center bg-primary text-white px-5 py-3'>
-                <div className="flex flex-col uppercase">
+                <div onClick={() => navigate('/')} className="flex flex-col uppercase cursor-pointer">
                     <h1 className="text-2xl uppercase">
                         Blood Bank
                     </h1>

@@ -1,13 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Table, Tooltip, Typography, message } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { Modal, Table, Tooltip, Typography, message } from 'antd'
 
 import { getDateFormat } from '../../../utils/helper'
 import { SetLoading } from '../../../redux/loaderSlice'
 import { GetAllOrganizationsOfDonar, GetAllOrganizationsOfHospital } from '../../../apicalls/users'
-
+import InventoryTable from '../../../components/InventoryTable'
 const Organization = ({userType}) => {
+    const [showHistory, setShowHistory] = useState(false)
     const [data, setData] = useState([])
+    const [selectedOrganization, setSelectedOrganization] = useState({})
+    const {currentUser} = useSelector(state => state.users)
     const dispatch = useDispatch()
 
     const getData = useCallback(async () => {
@@ -48,6 +51,16 @@ const Organization = ({userType}) => {
             dataIndex: 'createdAt',
             render: (text) => getDateFormat(text)
         },
+        {
+            title: 'Action',
+            dataIndex: 'action',
+            render: (text, record) => <span className='underline text-md cursor-pointer' onClick={() => {
+                setSelectedOrganization(record)
+                setShowHistory(true)
+            }}>
+                History
+            </span>
+        }
     ]
 
     useEffect(() => {
@@ -57,6 +70,18 @@ const Organization = ({userType}) => {
     return (
         <div>
             <Table dataSource={data} columns={columns} />
+            <Modal
+                title={`${userType === 'donar' ? 'Donation History' : 'Blood Request History'} with ${selectedOrganization.organizationName}`}
+                centered={true}
+                open={showHistory}
+                onCancel={() => setShowHistory(false)}
+                onOk={() => setShowHistory(false)}
+            >
+                <InventoryTable filters={{
+                    organization: selectedOrganization._id,
+                    [userType]: currentUser._id
+                }} />
+            </Modal>
         </div>
     )
 }
