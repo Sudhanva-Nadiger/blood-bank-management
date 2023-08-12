@@ -34,9 +34,13 @@ const Profile = () => {
                             (
                                 <>
                                     <Tabs.TabPane tab='Donations' key='4'>
+                                        <InventoryTable filters={{
+                                            donar: currentUser._id,
+                                            inventoryType: 'in'
+                                        }} />
                                     </Tabs.TabPane>
                                     <Tabs.TabPane tab='Organizations' key='5'>
-                                        <Organizations />
+                                        <Organizations userType={'donar'} />
                                     </Tabs.TabPane>
                                 </>
                             )
@@ -46,7 +50,10 @@ const Profile = () => {
                             (
                                 <>
                                     <Tabs.TabPane tab='Consumptions' key='6'>
-                                        <InventoryTable />
+                                        <InventoryTable filters={{
+                                            hospital: currentUser._id,
+                                            inventoryType: 'out'
+                                        }} />
                                     </Tabs.TabPane>
                                     <Tabs.TabPane tab='Organizations' key='7'>
                                         <Organizations userType='hospital' />

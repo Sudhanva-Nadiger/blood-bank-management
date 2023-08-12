@@ -6,7 +6,7 @@ import { SetLoading } from '../redux/loaderSlice'
 import { getDateFormat } from '../utils/helper'
 import { GetInventoryWithFilters } from '../apicalls/inventory'
 
-const InventoryTable = () => {
+const InventoryTable = ({filters}) => {
   const [data, setData] = useState([])
   const dispatch = useDispatch()
 
@@ -36,7 +36,7 @@ const InventoryTable = () => {
   const getData = useCallback(async () => {
     try {
       dispatch(SetLoading(true))
-      const response = await GetInventoryWithFilters()
+      const response = await GetInventoryWithFilters(filters)
       console.log(response);
       dispatch(SetLoading(false))
       if (response.success) {

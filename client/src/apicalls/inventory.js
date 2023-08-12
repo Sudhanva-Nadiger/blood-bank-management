@@ -8,6 +8,6 @@ export const GetInventory = async () => {
    return await axiosInstance('GET', '/api/inventory/get');
 }
 
-export const GetInventoryWithFilters = async () => {
-    return await axiosInstance('GET', '/api/inventory/filter');
+export const GetInventoryWithFilters = async (filters) => {
+    return await axiosInstance('POST', '/api/inventory/filter', filters);
 }
