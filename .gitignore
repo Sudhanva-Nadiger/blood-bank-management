@@ -12,6 +12,29 @@ dist
 dist-ssr
 *.local
 notes.md
+.env
+.env.test
+.env.production
+.env.local
+.env.development.local
+.env.development
+.env.staging.local
+.env.staging
+.env.preview.local
+.env.preview
+.env.production.local
+.env.example
+.env.build
+.env.build.local
+.env.build.production
+.env.build.production.local
+.env.build.staging
+.env.build.staging.local
+.env.build.preview
+.env.build.preview.local
+.env.build.development
+.env.build.development.local
+.env.build.test
 
 # Editor directories and files
 .vscode/*
