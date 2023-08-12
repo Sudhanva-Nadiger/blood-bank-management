@@ -11,6 +11,10 @@
     font-family: 'Poppins', sans-serif !important;
 }
 
+body {
+    background-color: #e1e1e1;
+}
+
 input, textarea {
     min-height: 40px !important;
     border: 1px solid #6a6a6a !important;

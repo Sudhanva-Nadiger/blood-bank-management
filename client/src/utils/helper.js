@@ -1,6 +1,7 @@
 import moment from 'moment';
 
 export const getLoggedInUsername = (user) => {
+    if(!user) return null
     if(user.userType === 'donar') {
         return user.name
     } else if(user.userType === 'hospital') {
