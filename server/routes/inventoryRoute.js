@@ -115,8 +115,8 @@ router.get('/get', authMiddleWare, async (req, res) => {
 })
 router.post('/filter', authMiddleWare, async (req, res) => {
     try {
-        const {userId, ...rest} = req.body
-        const inventory = await Inventory.find(rest).populate('organization', 'organizationName')
+        const {userId, limit, ...rest} = req.body
+        const inventory = await Inventory.find(rest).limit(limit ?? 0).populate('organization', 'organizationName')
         res.send({
             success: true,
             message: 'Inventory fetched successfully',

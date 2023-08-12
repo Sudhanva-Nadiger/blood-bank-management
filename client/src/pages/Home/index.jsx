@@ -6,6 +6,7 @@ import { GetAllBloodGroupsInventory } from '../../apicalls/dashboard'
 import ProtectedPage from '../../components/ProtectedPage'
 import { SetLoading } from '../../redux/loaderSlice'
 import { getLoggedInUsername } from '../../utils/helper'
+import InventoryTable from '../../components/InventoryTable'
 
 const Home = () => {
 	const { currentUser } = useSelector(state => state.users)
@@ -82,10 +83,19 @@ const Home = () => {
 										<span>{available} ML</span>
 									</div>
 								</div>
+
 							</div>
 						})
 					}
 				</div>
+
+				<span className="text-xl text-gray-700">
+					Your recent inventory
+				</span>
+
+				<InventoryTable filters={{
+					organization: currentUser._id
+				}} limit={5}/>
 			</div>
 		</ProtectedPage>
 	)
