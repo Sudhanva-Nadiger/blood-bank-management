@@ -14,7 +14,6 @@ const Hospital = () => {
         try {
             dispatch(SetLoading(true))
             const response = await GetAllHospitalOfOrganization()
-            console.log('donars of org', response);
             dispatch(SetLoading(false))
             if(response.success) {
                 setData(response.data)

@@ -20,7 +20,6 @@ const ProtectedPage = ({ children }) => {
             dispatch(SetLoading(true))
             const response = await GetCurrentUser()
             dispatch(SetLoading(false))
-            console.log(response);
             if (response.success) {
                 message.success(response.message)
                 dispatch(SetCurrentUser(response.data))

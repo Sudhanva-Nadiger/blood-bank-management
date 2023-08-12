@@ -15,7 +15,6 @@ const Organization = ({userType}) => {
             dispatch(SetLoading(true))
             const response = await (userType === 'donar' ? GetAllOrganizationsOfDonar() : GetAllOrganizationsOfHospital());
             dispatch(SetLoading(false))
-            console.log('organizations of hosp', response);
             if(response.success) {
                 setData(response.data)
                 dispatch(SetLoading(false))

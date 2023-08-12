@@ -116,7 +116,6 @@ router.get('/get', authMiddleWare, async (req, res) => {
 router.post('/filter', authMiddleWare, async (req, res) => {
     try {
         const inventory = await Inventory.find(req.body.filters).populate('organization', 'organizationName')
-        console.log("hospital inventory******", inventory);
 
         res.send({
             success: true,

@@ -14,7 +14,6 @@ const Donars = () => {
         try {
             dispatch(SetLoading(true))
             const response = await GetAllDonarsOfOrganization()
-            console.log('donars of org', response);
             dispatch(SetLoading(false))
             if(response.success) {
                 setData(response.data)

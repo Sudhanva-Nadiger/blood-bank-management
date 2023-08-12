@@ -12,8 +12,6 @@ const Inventory = () => {
     const [data, setData] = useState([])
     const dispatch = useDispatch()
 
-    console.log(data);
-    
     const colums = [
         {
             title: 'Inventory TYpe',
@@ -52,7 +50,6 @@ const Inventory = () => {
         try {
             dispatch(SetLoading(true))
             const response = await GetInventory()
-            console.log(response);
             dispatch(SetLoading(false))
             if(response.success) {
                 setData(response.data)

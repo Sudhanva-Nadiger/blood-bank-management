@@ -6,7 +6,6 @@ export const axiosInstance = async (
     method, endpoint, payload
 ) => {
     try {
-        console.log('payload filter', payload);
         const response = await axios(
             {
                 method,

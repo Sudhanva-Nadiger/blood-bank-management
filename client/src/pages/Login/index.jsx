@@ -15,7 +15,6 @@ const Login = () => {
   const dispatch = useDispatch()
 
   const onFinish = async (values) => {
-    console.log(values);
     try {
       dispatch(SetLoading(true))
       const response = await LoginUser({

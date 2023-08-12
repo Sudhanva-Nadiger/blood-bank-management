@@ -37,7 +37,6 @@ const InventoryTable = ({filters}) => {
     try {
       dispatch(SetLoading(true))
       const response = await GetInventoryWithFilters(filters)
-      console.log(response);
       dispatch(SetLoading(false))
       if (response.success) {
         setData(response.data)

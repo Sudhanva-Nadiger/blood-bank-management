@@ -26,7 +26,6 @@ const Register = () => {
       })
       dispatch(SetLoading(false))
 
-      console.log(response);
       if(response.success) {
         message.success(response.message)
         navigate('/login')

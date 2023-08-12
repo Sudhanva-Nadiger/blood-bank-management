@@ -11,7 +11,6 @@ import Profile from './pages/Profile'
 function App() {
 
   const {loading} = useSelector(state => state.loading)
-  console.log(loading);
 
   return (
     <>

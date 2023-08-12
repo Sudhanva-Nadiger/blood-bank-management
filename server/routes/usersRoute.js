@@ -8,7 +8,6 @@ const mongoose = require('mongoose');
 
 // register new user
 router.post('/register', async (req, res) => {
-    console.log(req.body);
     try {
         // check if user already exists
         const userExists = await User.findOne({ email: req.body.email })
@@ -33,7 +32,6 @@ router.post('/register', async (req, res) => {
 // login user
 router.post('/login', async (req, res) => {
     try {
-        console.log(req.body);
         // check if user exists
         const user = await User.findOne({ email: req.body.email })
         if (!user) {
@@ -155,7 +153,6 @@ router.get('/get-all-organizations-hospital', authMiddleware, async (req, res) =
             owner:1
         })
 
-        console.log("orgs of hospital", organizations);
 
         return res.send({
             success: true,
@@ -191,8 +188,6 @@ router.get('/get-all-hospitals', authMiddleware, async (req, res) => {
             createdAt: 1,
             owner:1
         })
-
-        console.log(hospitals);
 
         return res.send({
             success: true,

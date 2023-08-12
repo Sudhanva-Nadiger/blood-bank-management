@@ -18,8 +18,6 @@ const InventoryForm = ({
     const dispatch = useDispatch()
     const rules = getAntdInputValidation()
 
-    console.log('currentUser', currentUser);
-
     const onFinish = async (values) => {
         try {
             dispatch(SetLoading(true))
