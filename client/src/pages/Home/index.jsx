@@ -45,6 +45,24 @@ const Home = () => {
 		bloodGroupMap.set(_id, { totalIn, totalOut })
 	})
 
+	let filters;
+	if (currentUser?.userType === 'organization') {
+		filters = {
+			organization: currentUser._id
+		}
+	} else if (currentUser?.userType === 'donar') {
+		filters = {
+			donar: currentUser._id,
+			invntoryTYpe: 'in'
+		}
+	} else if (currentUser?.userType === 'hospital') {
+		filters = {
+			hospital: currentUser._id,
+			invntoryTYpe: 'out'
+		}
+	}
+
+
 	return (
 		<ProtectedPage>
 			<div>
@@ -52,50 +70,50 @@ const Home = () => {
 					Welcome {getLoggedInUsername(currentUser)}
 				</span>
 
-				<div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-					{
-						bloodGroups.map((item, index) => {
-							let details = bloodGroupMap.get(item)
-							let totIn = details?.totalIn || 0
-							let totOut = details?.totalOut || 0
-							let available = Math.max(totIn - totOut, 0)
+				{
+					currentUser?.userType === 'organization' && <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+						{
+							bloodGroups.map((item, index) => {
+								let details = bloodGroupMap.get(item)
+								let totIn = details?.totalIn || 0
+								let totOut = details?.totalOut || 0
+								let available = Math.max(totIn - totOut, 0)
 
-							return <div
-								key={item}
-								style={{
-									backgroundColor: colors[index],
-								}}
-								className={'text-white text-center p-5 flex justify-between mt-5 rounded bg-gradient-to-br'}
-							>
-								<h1 className='text-4xl uppercase'>{item}</h1>
+								return <div
+									key={item}
+									style={{
+										backgroundColor: colors[index],
+									}}
+									className={'text-white text-center p-5 flex justify-between mt-5 rounded bg-gradient-to-br'}
+								>
+									<h1 className='text-4xl uppercase'>{item}</h1>
 
-								<div className="flex flex-col justify-between">
-									<div className="justify-between flex gap-5">
-										<span>Total In</span>
-										<span>{totIn} ML</span>
+									<div className="flex flex-col justify-between">
+										<div className="justify-between flex gap-5">
+											<span>Total In</span>
+											<span>{totIn} ML</span>
+										</div>
+										<div className="justify-between flex gap-5">
+											<span>Total Out</span>
+											<span>{totOut} ML</span>
+										</div>
+										<div className="justify-between flex gap-5">
+											<span>Available</span>
+											<span>{available} ML</span>
+										</div>
 									</div>
-									<div className="justify-between flex gap-5">
-										<span>Total Out</span>
-										<span>{totOut} ML</span>
-									</div>
-									<div className="justify-between flex gap-5">
-										<span>Available</span>
-										<span>{available} ML</span>
-									</div>
+
 								</div>
-
-							</div>
-						})
-					}
-				</div>
+							})
+						}
+					</div>
+				}
 
 				<span className="text-xl text-gray-700">
-					Your recent inventory
+					Your recent activities
 				</span>
 
-				<InventoryTable filters={{
-					organization: currentUser._id
-				}} limit={5}/>
+				<InventoryTable filters={filters} limit={5} />
 			</div>
 		</ProtectedPage>
 	)
