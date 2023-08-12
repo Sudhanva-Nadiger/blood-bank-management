@@ -7,6 +7,7 @@ import Inventory from './Inventory'
 import Donars from './Donars'
 import Hospital from './Hospital'
 import Organizations from './Organization'
+import InventoryTable from '../../components/InventoryTable'
 
 const Profile = () => {
     const { currentUser } = useSelector(state => state.users)
@@ -45,6 +46,7 @@ const Profile = () => {
                             (
                                 <>
                                     <Tabs.TabPane tab='Consumptions' key='6'>
+                                        <InventoryTable />
                                     </Tabs.TabPane>
                                     <Tabs.TabPane tab='Organizations' key='7'>
                                         <Organizations userType='hospital' />

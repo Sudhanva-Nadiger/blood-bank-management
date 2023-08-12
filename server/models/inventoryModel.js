@@ -21,7 +21,7 @@ const inventorySchema = new mongoose.Schema({
     },
     organization: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'organizations',
+        ref: 'users',
         required: true
     },
     // if inventoryType is out then hospitalId is required
@@ -39,7 +39,7 @@ const inventorySchema = new mongoose.Schema({
         required: function () {
             return this.inventoryType === 'in';
         }
-    }
+    },
 }, {
     timestamps: true
 });

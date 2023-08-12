@@ -7,3 +7,7 @@ export const AddInventory = async (inventory) => {
 export const GetInventory = async () => {
    return await axiosInstance('GET', '/api/inventory/get');
 }
+
+export const GetInventoryWithFilters = async () => {
+    return await axiosInstance('GET', '/api/inventory/filter');
+}

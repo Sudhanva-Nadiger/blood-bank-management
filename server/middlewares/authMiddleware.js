@@ -9,9 +9,7 @@ module.exports = function (req, res, next) {
 
     try {
         // verify token
-        console.log(token);
         const verified = jwt.verify(token, process.env.JWT_SECRET)
-        console.log(verified);
         req.body.userId = verified.userId
         next()
     } catch (error) {

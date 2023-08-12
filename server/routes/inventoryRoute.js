@@ -10,21 +10,21 @@ const mongoose = require('mongoose');
 router.post('/add', authMiddleWare, async (req, res) => {
     try {
         // validate email and inventoryType
-        const user = await User.findOne({email: req.body.email});
+        const user = await User.findOne({ email: req.body.email });
         if (!user) {
             throw new Error('Invalid Email');
         }
 
         const invType = req.body.inventoryType
-        if(invType === 'in' && user.userType !== 'donar') {
+        if (invType === 'in' && user.userType !== 'donar') {
             throw new Error('This email not registered as donar');
         }
 
-        if(invType === 'out' && user.userType !== 'hospital') {
+        if (invType === 'out' && user.userType !== 'hospital') {
             throw new Error('This email not registered as hospital');
         }
 
-        if(invType === 'out') {
+        if (invType === 'out') {
             // check if inventory is available
             const requestedBloodGroup = req.body.bloodGroup;
             const requestedQuantity = req.body.quantity;
@@ -71,7 +71,7 @@ router.post('/add', authMiddleWare, async (req, res) => {
             const totalOut = totalOutOfRequestedBloodGroup.length > 0 ? totalOutOfRequestedBloodGroup[0].total : 0;
             const availableQuantity = totalIn - totalOut;
 
-            if(availableQuantity < requestedQuantity) {
+            if (availableQuantity < requestedQuantity) {
                 throw new Error(`only ${availableQuantity} unit(s) of ${requestedBloodGroup.toUpperCase()} blood available`);
             }
 
@@ -100,12 +100,30 @@ router.post('/add', authMiddleWare, async (req, res) => {
 // get inventory
 router.get('/get', authMiddleWare, async (req, res) => {
     try {
-        const inventory = await Inventory.find({organization: req.body.userId}).populate('donar').populate('hospital', 'hospitalName').sort({createdAt: -1});
+        const inventory = await Inventory.find({ organization: req.body.userId }).populate('donar').populate('hospital', 'hospitalName').sort({ createdAt: -1 });
         return res.send({
             success: true,
             message: 'Inventory fetched successfully',
             data: inventory
         });
+    } catch (error) {
+        res.send({
+            success: false,
+            message: error.message
+        });
+    }
+})
+router.get('/filter', authMiddleWare, async (req, res) => {
+    try {
+        const inventory = await Inventory.find({ hospital: req.body.userId, inventoryType: 'out' }).populate('organization', 'organizationName')
+        console.log("hospital inventory******", inventory);
+
+        res.send({
+            success: true,
+            message: 'Inventory fetched successfully',
+            data: inventory
+        });
+
     } catch (error) {
         res.send({
             success: false,
