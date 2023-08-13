@@ -53,12 +53,12 @@ const Home = () => {
 	} else if (currentUser?.userType === 'donar') {
 		filters = {
 			donar: currentUser._id,
-			invntoryTYpe: 'in'
+			inventoryType: 'in'
 		}
 	} else if (currentUser?.userType === 'hospital') {
 		filters = {
 			hospital: currentUser._id,
-			invntoryTYpe: 'out'
+			inventoryType: 'out'
 		}
 	}
 

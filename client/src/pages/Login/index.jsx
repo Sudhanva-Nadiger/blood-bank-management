@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Form, Input, Radio, message } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 import { LoginUser } from '../../apicalls/users'
@@ -13,6 +13,7 @@ const Login = () => {
   const [userType, setUserType] = useState('donar')
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { currentUser } = useSelector(state => state.users)
 
   const onFinish = async (values) => {
     try {
@@ -39,10 +40,12 @@ const Login = () => {
   }
 
   useEffect(() => {
+    if(!currentUser) return
+    
     if(localStorage.getItem('token') !== null) {
       navigate('/')
     }
-  }, [navigate])
+  }, [currentUser, navigate])
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-primary">

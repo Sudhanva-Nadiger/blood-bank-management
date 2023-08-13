@@ -26,19 +26,28 @@ const ProtectedPage = ({ children }) => {
             } else {
                 throw new Error(response.message)
             }
+
+            return false;
         } catch (error) {
             dispatch(SetLoading(false))
+            dispatch(SetCurrentUser(null))
             message.error(error.message)
+            return true;
         }
     }, [dispatch])
+
+    console.log('rendering');
 
 
     useEffect(() => {
         if (localStorage.getItem('token') !== null) {
-            getCurrentUser()
+            getCurrentUser().then(goToLogin => {
+                if(goToLogin) navigate('/login')
+            })
         } else {
             navigate('/login')
         }
+
     }, [getCurrentUser, navigate])
 
     return (
@@ -74,7 +83,8 @@ const ProtectedPage = ({ children }) => {
             <div className="px-5 py-1">
                 {children}
             </div>
-        </div> : <div>oops</div>
+        </div> : <div className='flex items-center justify-center'>
+        </div>
     )
 }
 
