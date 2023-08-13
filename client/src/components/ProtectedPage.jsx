@@ -36,8 +36,6 @@ const ProtectedPage = ({ children }) => {
         }
     }, [dispatch])
 
-    console.log('rendering');
-
 
     useEffect(() => {
         if (localStorage.getItem('token') !== null) {
