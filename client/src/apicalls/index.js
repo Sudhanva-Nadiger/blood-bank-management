@@ -9,7 +9,7 @@ export const axiosInstance = async (
         const response = await axios(
             {
                 method,
-                url: `${BASE_URL}${endpoint}`,
+                url: `${endpoint}`,
                 data: payload,
                 headers: {
                     authorization: `${localStorage.getItem('token')}`
